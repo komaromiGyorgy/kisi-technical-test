@@ -1,0 +1,42 @@
+@use 'assets/font/fonts';
+
+:root {
+    --midnight-purple: #222647;
+    --connect-blue: #4A52FF;
+    --connect-tint: #C9CBFF;
+    --warm-grey: #C7C5C3;
+    --alarm-yellow: #FFFB94
+    --approve-green: #96E697;
+    --pure-white: #FFFFFF;
+    --tech-black: #191919;
+    --overlay-color: #292928;
+}
+
+body {
+    margin: 0;
+    box-sizing: border-box;
+    background-color: var(--tech-black);
+}
+
+.heading {
+    font-family: 'Neue Haas Unica';
+    font-weight: 400;
+    text-align: left;
+    font-style: normal;
+    color: var(--pure-white);
+    &-medium {
+        font-size: 32px;
+        line-height: 44px;
+        letter-spacing: -0.04em;
+    }
+    &-small {
+        font-size: 20px;
+        line-height: 24px;
+        letter-spacing: -0.04em;
+    }
+}
+
+img {
+  max-inline-size: 100%;
+  block-size: auto;
+}
