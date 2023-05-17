@@ -1,6 +1,6 @@
 import express from "express"; // ESModules
-
-import imageRouter from "./routes/images";
+import imageRouter from "./routes/articles/article-router";
+import error from "./middleware/error";
 import cors from "cors";
 
 const app = express();
@@ -15,6 +15,8 @@ app.get("/ping", (_req, res) => {
 });
 
 app.use("/images", imageRouter);
+
+app.use(error);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
