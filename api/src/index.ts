@@ -1,9 +1,11 @@
 import express from "express"; // ESModules
 
 import imageRouter from "./routes/images";
+import cors from "cors";
 
 const app = express();
-app.use(express.json()); // middleware que transforma la req.body a un json
+app.use(express.json());
+app.use(cors());
 
 const PORT = 3000;
 
