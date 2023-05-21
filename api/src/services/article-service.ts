@@ -1,34 +1,43 @@
-import { Article, IResponse } from "../types";
+import { Article, IResponse, Meta } from "../types";
 import articleData from "../data/articles.json";
-import path from "path";
-import fs from "fs";
+import fs from "fs/promises";
+import { comapreByFileName, getFileSize, getImagesLength } from "../utils";
+
+const IMAGES_PATH = "./src/images";
 
 export class ArticleService {
   private articles: Article[] = articleData as Article[];
 
-  public getEntries = (baseUrl: string): IResponse[] => {
-    return fs.readdirSync("./src/images").map((file, index) => ({
-      imageUrl: `${baseUrl}/images/${file}`,
-      ...this.articles[index % this.articles.length],
-    }));
+  public getEntries = async (baseUrl: string) => {
+    const files = await fs
+      .readdir(IMAGES_PATH)
+      .then((files) => files.sort(comapreByFileName));
+
+    return Promise.all(
+      files.map(async (file, index) => {
+        const imageMeta = await getFileSize(`${IMAGES_PATH}/${file}`);
+
+        return {
+          url: `${baseUrl}/images/${file}`,
+          meta: imageMeta,
+          ...this.articles[index % this.articles.length],
+        };
+      })
+    );
   };
 
-  public uploadFile = (
+  public uploadFile = async (
     baseUrl: string,
     file: Express.Multer.File
-  ): IResponse => {
-    const tempPath = file.path;
-    const fileExtension = path.extname(file.originalname);
-    const imageCount = fs.readdirSync("./src/images").length - 1;
-    const fileName = `/images/image${imageCount}${fileExtension}`;
-    const targetPath = path.join(__dirname, `..${fileName}`);
+  ): Promise<IResponse> => {
+    const fileName = `/images/${file.filename}`;
+    const imageCount = await getImagesLength();
+    const imageMeta = await getFileSize(`${IMAGES_PATH}/${file.filename}`);
 
-    fs.rename(tempPath, targetPath, (err) => {
-      if (err) throw err;
-    });
     return {
-      imageUrl: `${baseUrl}${fileName}`,
-      ...this.articles[imageCount % this.articles.length],
+      url: `${baseUrl}${fileName}`,
+      meta: imageMeta as unknown as Meta,
+      ...this.articles[(imageCount - 1) % this.articles.length],
     };
   };
 }

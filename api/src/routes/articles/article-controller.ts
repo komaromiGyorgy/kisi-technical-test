@@ -4,16 +4,18 @@ import { ArticleService } from "../../services/article-service";
 export class ArticleController {
   private articleService = new ArticleService();
 
-  public getAll = (req: Request, res: Response, next: NextFunction) => {
+  public getAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const baseUrl = `${req.protocol}://${req.get("host")}`;
-      res.json({ data: this.articleService.getEntries(baseUrl) });
+      res
+        .status(200)
+        .json({ data: await this.articleService.getEntries(baseUrl) });
     } catch (error) {
       next(error);
     }
   };
 
-  public create = (req: Request, res: Response, next: NextFunction) => {
+  public create = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const file = req.file;
       const baseUrl = `${req.protocol}://${req.get("host")}`;
@@ -24,7 +26,7 @@ export class ArticleController {
       }
       res
         .status(201)
-        .json({ data: this.articleService.uploadFile(baseUrl, file) });
+        .json({ data: await this.articleService.uploadFile(baseUrl, file) });
     } catch (error) {
       next(error);
     }

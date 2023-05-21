@@ -1,4 +1,4 @@
-import express from "express"; // ESModules
+import express from "express";
 import imageRouter from "./routes/articles/article-router";
 import error from "./middleware/error";
 import cors from "cors";
@@ -7,11 +7,11 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 app.get("/ping", (_req, res) => {
   console.log("someone pinged here!!");
-  res.send("pong");
+  res.status(200).send("pong");
 });
 
 app.use("/images", imageRouter);

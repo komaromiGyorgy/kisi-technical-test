@@ -3,8 +3,15 @@ export interface Article {
   description: string;
 }
 
+export interface Meta {
+  width: number;
+  height: number;
+  type: string;
+}
+
 export interface IResponse {
-  imageUrl: string;
+  url: string;
+  meta: Meta;
   title: string;
   description: string;
 }
