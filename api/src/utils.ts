@@ -1,10 +1,18 @@
-import { FileFilterCallback } from "multer";
+import multer, { FileFilterCallback } from "multer";
 import { Request } from "express";
 import path from "path";
-import fs from "fs";
+import fs from "fs/promises";
 import articles from "./data/articles.json";
+import imageSize from "image-size";
+import { promisify } from "util";
+import { Meta } from "./types";
+const sizeOf = promisify(imageSize);
 
-export function checkFileType(
+export async function getImagesLength() {
+  return fs.readdir("./src/images").then((results) => results.length);
+}
+
+export async function checkFileType(
   req: Request,
   file: Express.Multer.File,
   cb: FileFilterCallback
@@ -18,11 +26,38 @@ export function checkFileType(
   ) {
     return cb(new Error("Only image files are allowed (jpg|jpeg|png|gif)"));
   }
-  if (
-    limitation !== "ignore" &&
-    fs.readdirSync("./src/images").length >= articles.length
-  ) {
+  const imageslength = await getImagesLength();
+
+  if (limitation !== "ignore" && imageslength >= articles.length) {
     return cb(new Error("You have reached the limit of images"));
   }
   cb(null, true);
+}
+
+export async function getFileSize(url: string) {
+  const imageMeta = (await sizeOf(url)) as unknown as Meta;
+  return imageMeta;
+}
+
+const storage = multer.diskStorage({
+  destination: "./src/images/",
+  filename: async (_, file, cb) => {
+    const extension = path.extname(file.originalname);
+    const imageslength = await getImagesLength();
+    cb(null, `image${imageslength}${extension}`);
+  },
+});
+
+export const upload = multer({
+  storage: storage,
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB
+  fileFilter: checkFileType,
+});
+
+export function comapreByFileName(a: string, b: string) {
+  const fileNameA = a.replace("/", "");
+  const fileNameB = b.replace("/", "");
+  const numberA = Number(fileNameA.match(/\d+/)?.[0] || 0);
+  const numberB = Number(fileNameB.match(/\d+/)?.[0] || 0);
+  return numberA - numberB;
 }
