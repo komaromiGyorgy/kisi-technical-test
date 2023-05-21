@@ -1,0 +1,1 @@
+type Numberish = number | string;
