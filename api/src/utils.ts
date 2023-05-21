@@ -7,9 +7,12 @@ import imageSize from "image-size";
 import { promisify } from "util";
 import { Meta } from "./types";
 const sizeOf = promisify(imageSize);
+console.log(path.join(__dirname, "images"));
+
+export const iamgesPath = path.join(__dirname, "images");
 
 export async function getImagesLength() {
-  return fs.readdir("./src/images").then((results) => results.length);
+  return fs.readdir(iamgesPath).then((results) => results.length);
 }
 
 export async function checkFileType(
@@ -40,7 +43,7 @@ export async function getFileSize(url: string) {
 }
 
 const storage = multer.diskStorage({
-  destination: "./src/images/",
+  destination: iamgesPath,
   filename: async (_, file, cb) => {
     const extension = path.extname(file.originalname);
     const imageslength = await getImagesLength();
