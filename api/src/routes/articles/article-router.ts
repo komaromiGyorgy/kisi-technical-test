@@ -1,16 +1,10 @@
 import { Router } from "express";
-import multer from "multer";
 import articleController from "./article-controller";
-import { checkFileType } from "../../utils";
 import express from "express";
 import path from "path";
+import { upload } from "../../utils";
 
 const router = Router();
-const upload = multer({
-  dest: "./src/images/",
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB
-  fileFilter: checkFileType,
-});
 
 router.get("/", articleController.getAll);
 
