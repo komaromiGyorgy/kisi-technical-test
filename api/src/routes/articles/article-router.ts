@@ -10,6 +10,8 @@ router.get("/", articleController.getAll);
 
 router.post("/", upload.single("file"), articleController.create);
 
+router.get("/reset", articleController.reset);
+
 router.use(express.static(path.join(__dirname, "../../images")));
 
 export default router;
