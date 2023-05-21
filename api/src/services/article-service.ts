@@ -11,7 +11,7 @@ import {
 export class ArticleService {
   private articles: Article[] = articleData as Article[];
 
-  public getEntries = async (baseUrl: string) => {
+  public async getEntries(baseUrl: string) {
     const files = await fs
       .readdir(iamgesPath)
       .then((files) => files.sort(comapreByFileName));
@@ -27,12 +27,12 @@ export class ArticleService {
         };
       })
     );
-  };
+  }
 
-  public uploadFile = async (
+  public async uploadFile(
     baseUrl: string,
     file: Express.Multer.File
-  ): Promise<IResponse> => {
+  ): Promise<IResponse> {
     const fileName = `/images/${file.filename}`;
     const imageCount = await getImagesLength();
     const imageMeta = await getFileSize(`${iamgesPath}/${file.filename}`);
@@ -42,5 +42,15 @@ export class ArticleService {
       meta: imageMeta as unknown as Meta,
       ...this.articles[(imageCount - 1) % this.articles.length],
     };
-  };
+  }
+
+  public async reset() {
+    const files = await fs
+      .readdir(iamgesPath)
+      .then((files) => files.sort(comapreByFileName));
+    const filesToDelete = files.slice(7);
+    return Promise.all(
+      filesToDelete.map((file) => fs.unlink(`${iamgesPath}/${file}`))
+    );
+  }
 }

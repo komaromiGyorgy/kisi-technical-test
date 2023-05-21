@@ -31,6 +31,15 @@ export class ArticleController {
       next(error);
     }
   };
+
+  public reset = async (_req: Request, res: Response, next: NextFunction) => {
+    try {
+      await this.articleService.reset();
+      res.status(201).send("Images reset successfully!");
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default new ArticleController();
