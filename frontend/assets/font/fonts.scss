@@ -6,4 +6,12 @@
     url("assets/font/NeueHaasUnica-Regular.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
+  font-display: optional;
+}
+
+@font-face {
+  font-family: "Neue Haas Unica Fallback";
+  size-adjust: 0.507;
+  ascent-override: 100%;
+  src: local("Arial");
 }

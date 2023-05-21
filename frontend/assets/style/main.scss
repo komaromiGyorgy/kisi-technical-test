@@ -1,42 +1,57 @@
-@use 'assets/font/fonts';
+@use "assets/font/fonts";
+@use "reset";
 
 :root {
-    --midnight-purple: #222647;
-    --connect-blue: #4A52FF;
-    --connect-tint: #C9CBFF;
-    --warm-grey: #C7C5C3;
-    --alarm-yellow: #FFFB94
-    --approve-green: #96E697;
-    --pure-white: #FFFFFF;
-    --tech-black: #191919;
-    --overlay-color: #292928;
+  --midnight-purple: #222647;
+  --connect-blue: #4a52ff;
+  --connect-tint: #c9cbff;
+  --warm-grey: #c7c5c3;
+  --alarm-yellow: #fffb94;
+  --approve-green: #96e697;
+  --pure-white: #ffffff;
+  --tech-black: #191919;
+  --overlay-color: #292928;
 }
 
 body {
-    margin: 0;
-    box-sizing: border-box;
-    background-color: var(--tech-black);
+  background-color: var(--tech-black);
+  padding: 100px 70px;
+}
+
+.custom-font {
+  font-family: "Neue Haas Unica", "Neue Haas Unica Fallback", sans-serif,
+    Helvetica;
+  font-weight: 400;
+  font-size-adjust: 97%;
+  text-align: left;
+  font-style: normal;
+  color: var(--pure-white);
 }
 
 .heading {
-    font-family: 'Neue Haas Unica';
-    font-weight: 400;
-    text-align: left;
-    font-style: normal;
-    color: var(--pure-white);
-    &-medium {
-        font-size: 32px;
-        line-height: 44px;
-        letter-spacing: -0.04em;
-    }
-    &-small {
-        font-size: 20px;
-        line-height: 24px;
-        letter-spacing: -0.04em;
-    }
+  &-medium {
+    font-size: 32px;
+    line-height: 44px;
+    letter-spacing: -0.04em;
+  }
+  &-small {
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: -0.04em;
+  }
 }
 
-img {
-  max-inline-size: 100%;
-  block-size: auto;
+.text {
+  &-small {
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: -0.04em;
+  }
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.25s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
